@@ -1,0 +1,84 @@
+.AS *
+  box-sizing: border-box
+
+.AS
+  z-index: 99
+  position: relative
+
+  display: flex
+  flex-direction: column
+
+.AS__lane
+  width: 100%
+  height: 10px
+
+  background: #eee
+  border-radius: 4px
+  border: 1px solid #E1E3EC
+  box-shadow: inset 0 1px 1px #f0f0f0, 0 3px 6px -5px #bbb
+
+  cursor: pointer
+
+.AS__pointer
+  position: absolute
+  top: -50%
+
+  width: 30px
+  height: 20px
+
+  background-color: #fff
+  border: 1px solid #D9D9D9
+  border-radius: 4px
+  box-shadow: inset 0 0 1px #fff, inset 0 1px 7px #ebebeb, 0 3px 6px -3px #bbb
+
+  cursor: pointer
+
+  &::before, &::after
+    content: ""
+    position: absolute
+    width: 1px
+    height: 9px
+    background-color: #ddd
+
+    top: 5px
+
+  &::before
+    left: 12px
+
+  &::after
+    right: 12px
+
+  &:active, &:focus-visible
+    box-shadow: inset 0 0 1px #fff, inset 0 1px 7px #ddd, 0 3px 6px -3px #bbb
+
+  &:focus-visible::before,
+  &:focus-visible::after
+    background-color: #4456B1
+
+
+  &:focus
+    outline: none
+
+.AS__connection
+  position: absolute
+  top: 0
+
+  height: 10px
+  background-color: #4456B1
+
+  cursor: pointer
+
+.AS--sliding .AS__pointer,
+.AS--sliding .AS__connection
+  transition: all .3s linear
+
+.AS--disabled .AS__connection
+  background-color: #B8B8B8
+  cursor: default
+
+.AS--disabled .AS__pointer
+  cursor: default
+
+  &:focus-visible::before,
+  &:focus-visible::after
+    background-color: #ddd
