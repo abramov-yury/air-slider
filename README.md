@@ -1,8 +1,8 @@
-#Air Slider
+# Air Slider
 
-![alt text] (pictures/AS.png)
+![alt text](pictures/AS.png)
 
-##How to use
+## How to use
 
 Add an input field to your HTML code
 
@@ -21,7 +21,7 @@ Add a small Javascript piece to your JS file:
     });
 ```
 
-##Configuration
+## Configuration
 
 | Keys | Description |
 | ----------- | ----------- |
@@ -32,7 +32,7 @@ Add a small Javascript piece to your JS file:
 | keyStep | It sets the step of the keyboard keys. Always multiplied by the STEP. (default 1)
 | start | A flat array of two values to set initial values (optional) |
 
-##Methods
+## Methods
 
 Methods can be used after a new instance of slider is initiated e.g. slider.getValue();
 
