@@ -134,8 +134,6 @@ export class AS {
     this.values.start = 0;
     this.values.end = this.config.values.length - 1;
 
-    this.piece = this.sliderWidth / (this.config.values.length - 1);
-
     if(checkInitial(this.config)) {
       const start = this.config.start;
       this.values.start = this.config.values.indexOf(start[0]);
@@ -153,6 +151,8 @@ export class AS {
   }
 
   _setValues() {
+    this.piece = this.sliderWidth / (this.config.values.length - 1);
+
     if(this.values.start >= this.values.end && this.activePointer === this.leftPointer) this.values.start = this.values.end;
     if(this.values.start >= this.values.end && this.activePointer === this.rightPointer) this.values.end = this.values.start;
 
