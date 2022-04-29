@@ -162,13 +162,13 @@ export class AS {
     this.connection.style.width = `${(this.values.end - this.values.start) * this.piece}px`;
     this.connection.style.transform = `translateX(${this.values.start * this.piece}px)`;
 
-    this.leftPointer.setAttribute("aria-label", "Левый бегунок");
+    this.leftPointer.setAttribute(`aria-label`, `Левый бегунок`);
     this.leftPointer.setAttribute(`aria-valuemin`, this.min);
     this.leftPointer.setAttribute(`aria-valuemax`, this.config.values[this.values.end]);
     this.leftPointer.setAttribute(`aria-valuenow`, this.config.values[this.values.start]);
     this.leftPointer.setAttribute(`aria-valuetext`, this.config.values[this.values.start]);
 
-    this.rightPointer.setAttribute("aria-label", "Правый бегунок");
+    this.rightPointer.setAttribute(`aria-label`, `Правый бегунок`);
     this.rightPointer.setAttribute(`aria-valuemin`, this.config.values[this.values.start]);
     this.rightPointer.setAttribute(`aria-valuemax`, this.max);
     this.rightPointer.setAttribute(`aria-valuenow`, this.config.values[this.values.end]);
@@ -195,7 +195,7 @@ export class AS {
     this.lane.addEventListener(`mousedown`, this._down.bind(this));
     this.connection.addEventListener(`mousedown`, this._down.bind(this));
 
-    window.addEventListener(`resize`, debounce(this._resize.bind(this), 100));
+    window.addEventListener(`resize`, this._resize.bind(this));
 
     return this._setValues();
   }
