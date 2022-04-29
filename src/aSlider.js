@@ -156,11 +156,11 @@ export class AS {
     if(this.values.start >= this.values.end && this.activePointer === this.leftPointer) this.values.start = this.values.end;
     if(this.values.start >= this.values.end && this.activePointer === this.rightPointer) this.values.end = this.values.start;
 
-    this.leftPointer.style.left = `${(this.values.start * this.piece - this.pointerWidth / 2) }px`;
-    this.rightPointer.style.left = `${(this.values.end * this.piece - this.pointerWidth / 2) }px`;
+    this.leftPointer.style.transform = `translateX(${(this.values.start * this.piece - this.pointerWidth / 2) }px)`;
+    this.rightPointer.style.transform = `translateX(${(this.values.end * this.piece - this.pointerWidth / 2) }px)`;
 
     this.connection.style.width = `${(this.values.end - this.values.start) * this.piece}px`;
-    this.connection.style.left = `${this.values.start * this.piece}px`;
+    this.connection.style.transform = `translateX(${this.values.start * this.piece}px)`;
 
     this.leftPointer.setAttribute(`aria-valuemin`, this.min);
     this.leftPointer.setAttribute(`aria-valuemax`, this.config.values[this.values.end]);
@@ -334,6 +334,8 @@ export class AS {
   _resize() {
     this.sliderLeft = this.slider.getBoundingClientRect().left;
     this.sliderWidth = this.slider.clientWidth;
+
+    if(this.slider.classList.contains(this.cls.sliding)) this.slider.classList.remove(this.cls.sliding);
 
     return this._setValues();
   }
