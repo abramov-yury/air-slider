@@ -2,7 +2,6 @@ import {
   checkInitial,
   createElement,
   createOnDocumentEvents,
-  debounce,
   prepareArrayValues,
   removeOnDocumentEvents
 } from "./helper.js";
@@ -33,7 +32,7 @@ export class AS {
       end:	null,
     };
 
-    this.Arrow = {left : `ArrowLeft`, right: `ArrowRight`};
+    this.Arrow = {left : "ArrowLeft", right: "ArrowRight"};
 
     this.theDocumentEvents = {};
 
@@ -54,12 +53,12 @@ export class AS {
     }
 
     this.cls = {
-      container: `AS`,
-      connection: `AS__connection`,
-      disabled: `AS--disabled`,
-      lane: `AS__lane`,
-      pointer: `AS__pointer`,
-      sliding: `AS--sliding`,
+      container: "AS",
+      connection: "AS__connection",
+      disabled: "AS--disabled",
+      lane: "AS__lane",
+      pointer: "AS__pointer",
+      sliding: "AS--sliding",
     };
 
     this.destroy = this.destroy.bind(this);
@@ -69,37 +68,37 @@ export class AS {
   }
 
   _initiate() {
-    if(typeof this.config.target !== `object`) {
-      return console.log(`Cannot find target element...`);
+    if(typeof this.config.target !== "object") {
+      return console.log("Cannot find target element...");
     }
 
     this.input = this.config.target;
 
     this.inputDisplay = getComputedStyle(this.input).display;
-    this.input.style.display = `none`;
+    this.input.style.display = "none";
 
-    if(typeof this.config.values !== `object` || !this.config.values) {
-      return console.log(`Object of the values not defined`);
+    if(typeof this.config.values !== "object" || !this.config.values) {
+      return console.log("Object of the values not defined");
     }
 
     const thereAreValues = (
-      Object.prototype.hasOwnProperty.call(this.config.values, `min`)
-      && Object.prototype.hasOwnProperty.call(this.config.values, `max`)
+      Object.prototype.hasOwnProperty.call(this.config.values, "min")
+      && Object.prototype.hasOwnProperty.call(this.config.values, "max")
     );
 
     if(!thereAreValues) {
-      return console.log(`Missing min or max value...`);
+      return console.log("Missing min or max value...");
     }
 
     return this._createSlider();
   }
 
   _createSlider() {
-    this.slider = createElement(`div`, this.cls.container);
-    this.lane = createElement(`div`, this.cls.lane);
-    this.connection = createElement(`div`, this.cls.connection);
-    this.leftPointer = createElement(`div`, this.cls.pointer, [`pointer`, `left`]);
-    this.rightPointer = createElement(`div`, this.cls.pointer, [`pointer`, `right`]);
+    this.slider = createElement("div", this.cls.container);
+    this.lane = createElement("div", this.cls.lane);
+    this.connection = createElement("div", this.cls.connection);
+    this.leftPointer = createElement("div", this.cls.pointer, ["pointer", "left"]);
+    this.rightPointer = createElement("div", this.cls.pointer, ["pointer", "right"]);
 
     this.slider.append(this.lane);
     this.slider.append(this.connection);
@@ -124,11 +123,11 @@ export class AS {
     this.config.values = prepareArrayValues(this.config);
 
     if(!this.config.values) {
-      return console.log(`No step defined...`);
+      return console.log("No step defined...");
     }
 
     if(this.config.values.length < 2) {
-      return console.log(`Need to set the correct values...`);
+      return console.log("Need to set the correct values...");
     }
 
     this.values.start = 0;
@@ -142,9 +141,9 @@ export class AS {
 
     this.pointers = this.slider.querySelectorAll(`.${this.cls.pointer}`);
     this.pointers.forEach((item) => {
-      item.setAttribute(`tabindex`, `0`);
-      item.setAttribute(`role`, `slider`);
-      item.setAttribute(`aria-orientation`, `horizontal`);
+      item.setAttribute("tabindex", "0");
+      item.setAttribute("role", "slider");
+      item.setAttribute("aria-orientation", "horizontal");
     });
 
     this._addEvents();
@@ -162,17 +161,17 @@ export class AS {
     this.connection.style.width = `${(this.values.end - this.values.start) * this.piece}px`;
     this.connection.style.transform = `translateX(${this.values.start * this.piece}px)`;
 
-    this.leftPointer.setAttribute(`aria-label`, `Левый бегунок`);
-    this.leftPointer.setAttribute(`aria-valuemin`, this.min);
-    this.leftPointer.setAttribute(`aria-valuemax`, this.config.values[this.values.end]);
-    this.leftPointer.setAttribute(`aria-valuenow`, this.config.values[this.values.start]);
-    this.leftPointer.setAttribute(`aria-valuetext`, this.config.values[this.values.start]);
+    this.leftPointer.setAttribute("aria-label", "Левый бегунок"); //!
+    this.leftPointer.setAttribute("aria-valuemin", this.min);
+    this.leftPointer.setAttribute("aria-valuemax", this.config.values[this.values.end]);
+    this.leftPointer.setAttribute("aria-valuenow", this.config.values[this.values.start]);
+    this.leftPointer.setAttribute("aria-valuetext", this.config.values[this.values.start]);
 
-    this.rightPointer.setAttribute(`aria-label`, `Правый бегунок`);
-    this.rightPointer.setAttribute(`aria-valuemin`, this.config.values[this.values.start]);
-    this.rightPointer.setAttribute(`aria-valuemax`, this.max);
-    this.rightPointer.setAttribute(`aria-valuenow`, this.config.values[this.values.end]);
-    this.rightPointer.setAttribute(`aria-valuetext`, this.config.values[this.values.end]);
+    this.rightPointer.setAttribute("aria-label", "Правый бегунок"); //!
+    this.rightPointer.setAttribute("aria-valuemin", this.config.values[this.values.start]);
+    this.rightPointer.setAttribute("aria-valuemax", this.max);
+    this.rightPointer.setAttribute("aria-valuenow", this.config.values[this.values.end]);
+    this.rightPointer.setAttribute("aria-valuetext", this.config.values[this.values.end]);
 
     this.input.value = `${this.config.values[this.values.start]}, ${this.config.values[this.values.end]}`;
 
@@ -180,30 +179,29 @@ export class AS {
   }
 
   _addEvents() {
-
     this.pointers.forEach((item) => {
-      item.addEventListener(`focus`, this._focus.bind(this));
-      item.addEventListener(`blur`, this._blur.bind(this));
-      item.addEventListener(`dragstart`, this._dragstart.bind(this));
-      item.addEventListener(`mousedown`, this._drag.bind(this));
-      item.addEventListener(`touchstart`, this._touchstart.bind(this));
-      item.addEventListener(`touchmove`, this._move.bind(this));
-      item.addEventListener(`touchcancel`, this._touchend.bind(this));
-      item.addEventListener(`touchend`, this._touchend.bind(this));
+      item.addEventListener("focus", this._focus.bind(this));
+      item.addEventListener("blur", this._blur.bind(this));
+      item.addEventListener("dragstart", this._dragstart.bind(this));
+      item.addEventListener("mousedown", this._drag.bind(this));
+      item.addEventListener("touchstart", this._touchstart.bind(this));
+      item.addEventListener("touchmove", this._move.bind(this));
+      item.addEventListener("touchcancel", this._touchend.bind(this));
+      item.addEventListener("touchend", this._touchend.bind(this));
     });
 
-    this.lane.addEventListener(`mousedown`, this._down.bind(this));
-    this.connection.addEventListener(`mousedown`, this._down.bind(this));
+    this.lane.addEventListener("mousedown", this._down.bind(this));
+    this.connection.addEventListener("mousedown", this._down.bind(this));
 
-    window.addEventListener(`resize`, this._resize.bind(this));
+    window.addEventListener("resize", this._resize.bind(this));
 
     return this._setValues();
   }
 
   _getActivePointer(evt) {
-    const attr = evt.target.getAttribute(`data-pointer`);
-    if(attr === `left`) this.activePointer = this.leftPointer;
-    if(attr === `right`) this.activePointer = this.rightPointer;
+    const attr = evt.target.getAttribute("data-pointer");
+    if(attr === "left") this.activePointer = this.leftPointer;
+    if(attr === "right") this.activePointer = this.rightPointer;
   }
 
   _dragstart(evt) {
@@ -217,14 +215,14 @@ export class AS {
     this.shift = evt.clientX - this.activePointer.getBoundingClientRect().left;
     if(this.slider.classList.contains(this.cls.sliding)) this.slider.classList.remove(this.cls.sliding);
 
-    createOnDocumentEvents(this.theDocumentEvents, `mousemove`, this._move.bind(this));
-    createOnDocumentEvents(this.theDocumentEvents, `mouseup`, this._drop.bind(this));
+    createOnDocumentEvents(this.theDocumentEvents, "mousemove", this._move.bind(this));
+    createOnDocumentEvents(this.theDocumentEvents, "mouseup", this._drop.bind(this));
   }
 
   _drop(evt) {
     evt.preventDefault();
 
-    removeOnDocumentEvents(this.theDocumentEvents, `mousemove, mouseup`);
+    removeOnDocumentEvents(this.theDocumentEvents, "mousemove, mouseup");
   }
 
   _touchstart(evt) {
@@ -245,38 +243,38 @@ export class AS {
     if(this.config.disabled) return;
     this._getActivePointer(evt);
 
-    createOnDocumentEvents(this.theDocumentEvents, `keydown`, this._keydown.bind(this));
+    createOnDocumentEvents(this.theDocumentEvents, "keydown", this._keydown.bind(this));
   }
 
   _blur() {
     if(this.config.disabled) return;
     this.activePointer = null;
 
-    removeOnDocumentEvents(this.theDocumentEvents, `keydown`);
+    removeOnDocumentEvents(this.theDocumentEvents, "keydown");
   }
 
   _getPoint(evt, action) {
     if(!action) {
-      throw new Error(`No action defined...`);
+      throw new Error("No action defined...");
     }
 
     let point = null;
-    const CX = evt.type === `touchmove` ? evt.touches[0].clientX : evt.clientX;
+    const CX = evt.type === "touchmove" ? evt.touches[0].clientX : evt.clientX;
     const SP = this.activePointer === this.leftPointer ? this.values.start : this.values.end;
     this.keyStep = this.config.keyStep;
 
     switch (action) {
-      case `move`:
+      case "move":
         point = (CX - this.sliderLeft) + (this.pointerWidth / 2 - this.shift);
         point = Math.round(point / this.piece);
         break;
-      case `down`:
+      case "down":
         point = Math.round((CX - this.sliderLeft) / this.piece);
         break;
-      case `right`:
+      case "right":
         point = Math.round(SP + this.keyStep);
         break;
-      case `left`:
+      case "left":
         point = Math.round(SP - this.keyStep);
     }
 
@@ -293,7 +291,7 @@ export class AS {
       return false;
     }
 
-    const point = this._getPoint(evt, `move`);
+    const point = this._getPoint(evt, "move");
 
     if(this.activePointer === this.leftPointer) this.values.start = point;
     if(this.activePointer === this.rightPointer) this.values.end = point;
@@ -307,8 +305,8 @@ export class AS {
 
     if(evt.key !== this.Arrow.right && evt.key !== this.Arrow.left) return;
 
-    if(evt.key === this.Arrow.right) point = this._getPoint(evt, `right`);
-    if(evt.key === this.Arrow.left) point = this._getPoint(evt, `left`);
+    if(evt.key === this.Arrow.right) point = this._getPoint(evt, "right");
+    if(evt.key === this.Arrow.left) point = this._getPoint(evt, "left");
 
     if(this.activePointer === this.leftPointer) this.values.start = point;
     if(this.activePointer === this.rightPointer) this.values.end = point;
@@ -320,7 +318,7 @@ export class AS {
     if(this.config.disabled) return;
     evt.preventDefault();
 
-    const getPoint = this._getPoint(evt, `down`);
+    const getPoint = this._getPoint(evt, "down");
 
     if(!this.slider.classList.contains(this.cls.sliding)) this.slider.classList.add(this.cls.sliding);
 
@@ -344,12 +342,12 @@ export class AS {
 
   disable(boolean) {
     this.config.disabled = boolean;
-    this.slider.classList[boolean ? `add` : `remove`](this.cls.disabled);
+    this.slider.classList[boolean ? "add" : "remove"](this.cls.disabled);
   }
 
 
   onChange() {
-    if(typeof this.config.onChange !== `function`) {
+    if(typeof this.config.onChange !== "function") {
       return;
     }
 
